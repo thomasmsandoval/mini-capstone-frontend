@@ -5,6 +5,9 @@ import { useState, useEffect } from "react";
 import { ProductsIndex } from "./ProductsIndex";
 import { ProductsNew } from "./ProductsNew";
 import { Modal } from "./Modal";
+import { ProductShow } from "./ProductShow";
+import { Signup } from "./Signup";
+import { Login } from "./Login";
 
 export function Content() {
   const [products, setProducts] = useState([]);
@@ -12,10 +15,9 @@ export function Content() {
   const [currentProduct, setCurrentProduct] = useState({});
 
   const handleIndexProducts = () => {
-    console.log(handleIndexProducts);
     axios.get("http://localhost:3000/products.json").then((response) => {
-      console.log(response.data);
       setProducts(response.data);
+      console.log(products);
     });
   };
 
@@ -33,20 +35,50 @@ export function Content() {
     setCurrentProduct(product);
   };
 
+  const handleUpdateProduct = (id, params) => {
+    console.log("handleUpdateProduct", params);
+    axios.patch(`http://localhost:3000/products/` + id + `json`, params).then((response) => {
+      setProducts(
+        products.map((product) => {
+          if (product.id === response.data.id) {
+            return response.data;
+          } else {
+            return product;
+          }
+        })
+      );
+      handleClose();
+    });
+  };
+
   const handleClose = () => {
-    console.log(handleClose);
+    console.log("handleClose");
     setIsProductVisible(false);
+  };
+
+  const handleDestroyProduct = (id) => {
+    console.log("handleDestroyProduct", id);
+    axios.delete(`http://localhost:3000/products/` + id + `.json`).then((response) => {
+      setProducts(products.filter((product) => product.id !== id));
+      handleClose();
+    });
   };
 
   useEffect(handleIndexProducts, []);
 
   return (
-    <div>
+    <main>
+      <Login />
+      <Signup />
       <ProductsNew onCreateProduct={handleCreateProduct} />
       <ProductsIndex products={products} onShowProduct={handleShowProduct} />
       <Modal show={isProductShowVisible} onClose={handleClose}>
-        <h1>Test</h1>
+        <ProductShow
+          product={currentProduct}
+          onUpdateProduct={handleUpdateProduct}
+          onDestroyProduct={handleDestroyProduct}
+        />
       </Modal>
-    </div>
+    </main>
   );
 }

@@ -1,13 +1,24 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+import axios from "axios";
 export function ProductsNew(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("handleSubmit");
     const params = new FormData(event.target);
-    props.createProduct(params, () => event.target.reset());
+    axios
+      .post("http://localhost:3000/products.json", params)
+      .then((response) => {
+        console.log(response.data);
+        event.target.reset();
+      })
+      .catch((error) => {
+        console.log(error.response.data.errors);
+      });
   };
 
   return (
-    <div>
+    <div id="products-new">
       <h1>New Product</h1>
       <form onSubmit={handleSubmit}>
         <div>
