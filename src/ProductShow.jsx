@@ -41,12 +41,13 @@ export function ProductShow(props) {
         <div>
           Description: <input defaultValue={props.product.description} name="descriptioin" type="text" />
         </div>
-        <div>
+        {/* <div>
           Supplier: <input defaultValue={props.product.supplier} name="supplier" type="text" />
-        </div>
+        </div> */}
         <div>
           Images: <input defaultValue={props.product.images} name="images" type="text" />
         </div>
+        <button type="submit">Update product</button>
       </form>
       <button onClick={handleClick}>Delete product</button>
     </div>

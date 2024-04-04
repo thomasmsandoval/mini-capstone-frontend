@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import axios from "axios";
@@ -8,6 +9,7 @@ import { Modal } from "./Modal";
 import { ProductShow } from "./ProductShow";
 import { Signup } from "./Signup";
 import { Login } from "./Login";
+import { LogoutLink } from "./LogoutLink";
 
 export function Content() {
   const [products, setProducts] = useState([]);
@@ -68,17 +70,20 @@ export function Content() {
 
   return (
     <main>
-      <Login />
-      <Signup />
-      <ProductsNew onCreateProduct={handleCreateProduct} />
-      <ProductsIndex products={products} onShowProduct={handleShowProduct} />
-      <Modal show={isProductShowVisible} onClose={handleClose}>
-        <ProductShow
-          product={currentProduct}
-          onUpdateProduct={handleUpdateProduct}
-          onDestroyProduct={handleDestroyProduct}
-        />
-      </Modal>
+      <div className="container">
+        <Login />
+        <Signup />
+        <LogoutLink />
+        <ProductsNew onCreateProduct={handleCreateProduct} />
+        <ProductsIndex products={products} onShowProduct={handleShowProduct} />
+        <Modal show={isProductShowVisible} onClose={handleClose}>
+          <ProductShow
+            product={currentProduct}
+            onUpdateProduct={handleUpdateProduct}
+            onDestroyProduct={handleDestroyProduct}
+          />
+        </Modal>
+      </div>
     </main>
   );
 }
