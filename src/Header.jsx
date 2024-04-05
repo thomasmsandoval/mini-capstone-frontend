@@ -1,5 +1,20 @@
-/* eslint-disable react/no-unknown-property */
+/* eslint-disable no-unused-vars */
+import { Modal } from "./Modal";
+import { Signup } from "./Signup";
+import { useState } from "react";
+// import { Link } from "react-router-dom";
+
 export function Header() {
+  const [isSignupVisible, setIsSignupVisible] = useState(false);
+
+  const handleSignupShow = () => {
+    setIsSignupVisible(true);
+  };
+
+  const handleClose = () => {
+    setIsSignupVisible(false);
+  };
+
   return (
     <header>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -32,36 +47,18 @@ export function Header() {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Pricing
+                  Signup
                 </a>
               </li>
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Dropdown link
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Login
                 </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Action
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Another action
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Something else here
-                    </a>
-                  </li>
-                </ul>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  New Product
+                </a>
               </li>
             </ul>
           </div>
