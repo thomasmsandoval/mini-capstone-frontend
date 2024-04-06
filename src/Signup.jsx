@@ -16,11 +16,12 @@ export function Signup() {
       .then((response) => {
         console.log(response.data);
         event.target.reset();
-        window.location.href = "/"; // Change this to hide a modal, redirect to a specific page, etc.
+        localStorage.setItem("flashMessage", "user created");
+        window.location.href = "/";
       })
       .catch((error) => {
         setStatus(error.response.status);
-        console.log(error.response.data.errors);
+        console.log(error.response.data.errors, error.response.status);
         setErrors(error.response.data.errors);
       });
   };

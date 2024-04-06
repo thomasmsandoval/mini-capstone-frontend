@@ -1,15 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+import { About } from "./About";
 import { ProductsIndex } from "./ProductsIndex";
 import { ProductsNew } from "./ProductsNew";
 import { Modal } from "./Modal";
 import { ProductShow } from "./ProductShow";
-import { Signup } from "./Signup";
+import { ProductsShowPage } from "./ProductsShowPage";
 import { Login } from "./Login";
 import { LogoutLink } from "./LogoutLink";
+import { Signup } from "./Signup";
 
 export function Content() {
   const [products, setProducts] = useState([]);
@@ -23,18 +27,21 @@ export function Content() {
     });
   };
 
-  const handleCreateProduct = (params, successCallback) => {
+  const handleShowProduct = (product) => {
+    setIsProductShowVisible(true);
+    setCurrentProduct(product);
+  };
+
+  const handleClose = () => {
+    console.log("handleClose");
+    setIsProductVisible(false);
+  };
+
+  const handleCreateProduct = (params) => {
     console.log("handleCreateProduct", params);
     axios.post("http://localhost:3000/products.json", params).then((response) => {
       setProducts([...products, response.data]);
-      successCallback();
     });
-  };
-
-  const handleShowProduct = (product) => {
-    console.log("handleShowProduct", product);
-    setIsProductShowVisible(true);
-    setCurrentProduct(product);
   };
 
   const handleUpdateProduct = (id, params) => {
@@ -53,14 +60,9 @@ export function Content() {
     });
   };
 
-  const handleClose = () => {
-    console.log("handleClose");
-    setIsProductVisible(false);
-  };
-
   const handleDestroyProduct = (id) => {
     console.log("handleDestroyProduct", id);
-    axios.delete(`http://localhost:3000/products/` + id + `.json`).then((response) => {
+    axios.delete(`http://localhost:3000/products/` + id + `.json`, id).then((response) => {
       setProducts(products.filter((product) => product.id !== id));
       handleClose();
     });
@@ -70,12 +72,16 @@ export function Content() {
 
   return (
     <main>
+      <Routes>
+        <Route path="/" element={<ProductsIndex products={products} onShowProduct={handleShowProduct} />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<LogoutLink />} />
+        <Route path="/products/new" element={<ProductsNew onCreateProduct={handleCreateProduct} />} />
+        <Route path="/products/:id" element={<ProductShow />} />
+      </Routes>
       <div className="container">
-        <Login />
-        <Signup />
-        <LogoutLink />
-        <ProductsNew onCreateProduct={handleCreateProduct} />
-        <ProductsIndex products={products} onShowProduct={handleShowProduct} />
         <Modal show={isProductShowVisible} onClose={handleClose}>
           <ProductShow
             product={currentProduct}
