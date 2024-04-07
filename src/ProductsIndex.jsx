@@ -20,7 +20,7 @@ export function ProductsIndex(props) {
           {props.products
             .filter((product) => product.name.toLowerCase().includes(searchFilter.toLocaleLowerCase()))
             .map((product) => (
-              <div key={product.id} className="card border-primary mb-3">
+              <div key={product.id} className="products card">
                 <h2>{product.name}</h2>
                 <div className="card-body">
                   <div>

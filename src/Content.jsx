@@ -27,21 +27,18 @@ export function Content() {
     });
   };
 
-  const handleShowProduct = (product) => {
-    setIsProductShowVisible(true);
-    setCurrentProduct(product);
-  };
-
-  const handleClose = () => {
-    console.log("handleClose");
-    setIsProductVisible(false);
-  };
-
-  const handleCreateProduct = (params) => {
+  const handleCreateProduct = (params, successCallback) => {
     console.log("handleCreateProduct", params);
     axios.post("http://localhost:3000/products.json", params).then((response) => {
       setProducts([...products, response.data]);
+      successCallback();
     });
+  };
+
+  const handleShowProduct = (product) => {
+    console.log("handleShowProduct", product);
+    setIsProductShowVisible(true);
+    setCurrentProduct(product);
   };
 
   const handleUpdateProduct = (id, params) => {
@@ -58,6 +55,11 @@ export function Content() {
       );
       handleClose();
     });
+  };
+
+  const handleClose = () => {
+    console.log("handleClose");
+    setIsProductVisible(false);
   };
 
   const handleDestroyProduct = (id) => {
